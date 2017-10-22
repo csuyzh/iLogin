@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>img/sysButton/close_button.png</file>
+        <file>img/sysButton/main_menu.png</file>
+        <file>img/sysButton/min_button.png</file>
+        <file>img/icon.png</file>
+        <file>img/sysButton/clear.png</file>
+        <file>img/sysButton/offline.png</file>
+        <file>img/sysButton/online.png</file>
+        <file>img/security.js</file>
+        <file>img/sysButton/configure.png</file>
+        <file>img/show.png</file>
+    </qresource>
+</RCC>
