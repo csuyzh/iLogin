@@ -58,8 +58,6 @@ void NetContral::logout(){
 
     replyflag = 2;
     request.setUrl(QUrl("http://10.0.0.55:803/srun_portal_pc_succeed.php"));
-    //request.setRawHeader(QByteArray("Referer"),QByteArray("http://10.0.0.55:803/srun_portal_pc_succeed.php"));
-   // QString postBody = QString("action=logout");
     QString postBody = QString("");
     this->post(request,postBody.toUtf8());
 }
@@ -67,10 +65,7 @@ void NetContral::logout(){
 void NetContral::logout2(QString account, QString passwd){
     replyflag = 3;
     request.setUrl(QUrl("http://10.0.0.55:803/srun_portal_pc_succeed.php"));
-//    request.setUrl(QUrl("http://10.0.0.55:80/cgi-bin/srun_portal"));
-    //request.setRawHeader(QByteArray("Referer"),QByteArray("http://10.0.0.55:804/srun_portal_pc_succeed.php"));
     QString postBody = QString("action=logout&username=%1&password=%2&ajax=%3").arg(account).arg(passwd).arg(1);
-//    QString postBody = QString("action=logout&ac_id=1&username=2120160836&mac=e4:d5:3d:07:5f:91&type=2");
      this->post(request,postBody.toUtf8());
 }
 void NetContral::logout3(QString account){
@@ -102,20 +97,15 @@ QString NetContral::getBrasAddress()const{
 
 void NetContral::loadLastState(const Settings *config){
      _isOnline = true;
-    // cookies = config->value("NetContral/cookies",QByteArray()).toByteArray();
      userIntranetAddress = config->value("NetContral/userIntranetAddress",QString()).toString();
      brasAddress = config->value("NetContral/brasAddress",QString()).toString();
-     //QList<QNetworkCookie> tmpc = QNetworkCookie::parseCookies(cookies);
-     //request.setRawHeader("Cookie",tmpc[0].toRawForm());
+
 }
 
 void NetContral::saveCurrentState(Settings *config){
     if(_isOnline==true){
         config->setValue("recordeflag",1);
         config->beginGroup("NetContral");
-        //config->setValue("cookies",cookies);
-        //config->setValue("userIntranetAddress",userIntranetAddress);
-        //config->setValue("brasAddress",brasAddress);
         config->endGroup();
     }
     else{
@@ -174,81 +164,6 @@ QString NetContral::encrytPassword(QString rawPassword){//这个方法日后需�
 }
 
 
-//void NetContral::makeCookieAvalable(){
-//    request.setUrl(QUrl("http://www.baidu.com"));
-//    this->get(request);
-//    eventloop->exec();
-//    if(flag==false)
-//        return;
-//    this->get(request);
-//    eventloop->exec();
-//    if(flag==false)
-//        return;
-//    this->get(request);
-//    eventloop->exec();
-//}
-
-//void NetContral::replyCookieSet(QNetworkReply *reply){
-//    if(reply->hasRawHeader("Set-Cookie")){
-//        cookies = reply->rawHeader("Set-Cookie");
-//        QList<QNetworkCookie> tmpc = QNetworkCookie::parseCookies(cookies);
-//        request.setRawHeader("Cookie",tmpc[0].toRawForm());
-//    }
-//    QString location = QString(reply->rawHeader("Location"));
-//    if(location.length()!=0){
-//        request.setUrl(QUrl(location));
-//        return;
-//    }
-//    QByteArray body = reply->readAll();
-//    if(body.contains("<html>")){
-//        QRegExp pattern;
-//        int start(0),end(0);                //包含信息字串的起始位置和终止位置
-//        start = body.lastIndexOf("input");     //从末尾开始搜索input域内的字串
-//        if(start==-1){
-//            emit error(errMsg);
-//            //qDebug()<<"Arguments Error!";
-//            flag = false;
-//            return;
-//        }
-//        for(int i=start;;i++){
-//            if(body[i]=='/'){
-//                end = i-1;
-//                break;
-//             }
-//          }
-//         pattern.setPattern("([0-9a-f]{8})");        //设置查询brasAddress的正则式
-//         if(pattern.indexIn(QString(body.mid(start,end-start)))==-1){
-//            emit error(errMsg);
-//             //qDebug()<<"Arguments Error!";
-//             flag = false;
-//             return;
-//         }
-//         brasAddress = pattern.capturedTexts().at(0);
-//         start = body.lastIndexOf("input",--start);
-//         if(start==-1){
-//           emit error(errMsg);
-//             //qDebug()<<"Arguments Error!";
-//             flag = false;
-//             return;
-//         }
-//         for(int i=start;;i++){
-//            if(body[i]=='/'){
-//               end = i-1;
-//               break;
-//              }
-//          }
-//          pattern.setPattern("([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3})");//设置查询ip的正则式
-//          if(pattern.indexIn(QString(body.mid(start,end-start)))==-1){
-//              emit error(errMsg);
-//              //qDebug()<<"Arguments Error!";
-//              flag = false;
-//              return;
-//          }
-//          userIntranetAddress = pattern.capturedTexts().at(0);
-//          _isConditionAvailable = true;
-//    }
-//}
-
 //响应登录,根据返回值，判断不同的情况
 void NetContral::replyLogin(QNetworkReply *reply){
     QByteArray array = reply->readAll();
@@ -280,22 +195,7 @@ void NetContral::replyLogin(QNetworkReply *reply){
         else
             emit error("Unknown cases!Try again later.");
     }
-//    QJsonDocument jsondoc = QJsonDocument::fromJson(reply->readAll());
-//    QJsonObject jsonData= jsondoc.object();
-//    responseResult result;
-//    result.resultCode = jsonData.take("resultCode").toVariant().toInt();
-//    if(result.resultCode==0 || result.resultCode==11){
-//        result.usedflow = jsonData.take("usedflow").toString();
-//        result.totalflow = jsonData.take("totalflow").toString();
-//        result.surplusmoney = jsonData.take("surplusmoney").toString();
-//        _isOnline = true;
-//        //qDebug()<<"Success Login!";
-//        emit responseInfo(result);
-//        return;
-//    }
-//    QString e = jsonData.take("resultDescribe").toString();
-//    emit error(e.length()!=0?e:"Unknown cases!Try again later.");
-//    //qDebug()<<e;
+
 }
 
 void NetContral::replyLogin2(QNetworkReply *reply){
@@ -327,17 +227,6 @@ void NetContral::replyLogin2(QNetworkReply *reply){
     emit responseInfo(result);
     return;
 
-
-    //    char * buff = new char[102400];
-    //    buff = array.data();
-    //    if(!arrayflag){
-    //        QFile data("recv.txt");
-    //        if (data.open(QFile::WriteOnly | QIODevice::Truncate)) {
-    //            QTextStream out(&data);
-    //            out.setCodec("UTF-8");
-    //            out << buff;
-    //        }
-    //    }
 
 }
 void NetContral::replyLogout(QNetworkReply *reply){
